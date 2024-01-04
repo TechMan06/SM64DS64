@@ -520,23 +520,23 @@ void render_hud_camera_status(void) {
         case CAM_STATUS_MARIO:
             switch(gMarioState->curCharacter) {
                 case 0:
-                    print_text(x+16, y, ",");
+                    print_text(x+16, SCREEN_HEIGHT - y - 16, ",");
                     break;
                 case 1:
-                    print_text(x+16, y, HUD_TOP_Y, "[");
+                    print_text(x+16, SCREEN_HEIGHT - y - 16, "[");
                     break;
                 case 2:
-                    print_text(x+16, y, HUD_TOP_Y, "]");
+                    print_text(x+16, SCREEN_HEIGHT - y - 16, "]");
                     break;
                 case 3:
-                    print_text(x+16, y, HUD_TOP_Y, "<");
+                    print_text(x+16, SCREEN_HEIGHT - y - 16, "<");
                     break;
                 case 4:
                 //WALUIGI, TO BE ADDED
-                    print_text(x+16, y, HUD_TOP_Y, ">");
+                    print_text(x+16, y, ">");
                     break;
                 default:
-                    print_text(x+16, y, HUD_TOP_Y, ",");
+                    print_text(x+16, y, ",");
                     break;
                 }
             break;
