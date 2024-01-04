@@ -28,6 +28,9 @@ enum PrintfGlyphs {
     GLYPH_APOSTROPHE      = 56,
     GLYPH_DOUBLE_QUOTE    = 57,
     GLYPH_UMLAUT          = 58,
+    GLYPH_WARIO_HEAD      = 59,
+    GLYPH_LUIGI_HEAD      = 60,
+    GLYPH_YOSHI_HEAD      = 61,
 };
 
 void print_text_fmt_int(s32 x, s32 y, const char *str, s32 n);

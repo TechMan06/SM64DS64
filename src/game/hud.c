@@ -389,9 +389,33 @@ void render_hud_breath_meter(void) {
  * Renders the amount of lives Mario has.
  */
 void render_hud_mario_lives(void) {
-    print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), HUD_TOP_Y, ","); // 'Mario Head' glyph
-    print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(38), HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), HUD_TOP_Y, "%d", gHudDisplay.lives);
+    char curChar = ",";
+    char curCharString[] = { curchar, 0x00 };
+    
+    switch(gMarioState->curCharacter) {
+    case 0:
+        curChar = ",";
+        break;
+    case 1:
+        curChar = "Ã";
+        break;
+    case 2:
+        curChar = "ã";
+        break;
+    case 3:
+        curChar = "ú";
+        break;
+    case 4:
+    //WALUIGI, TO BE ADDED
+        curChar = "ú";
+        break;
+    default:
+        curChar = ",";
+    }
+
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), HUD_TOP_Y, curCharString); // 'Mario Head' glyph
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(38), HUD_TOP_Y, "*"); // 'X' glyph
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), HUD_TOP_Y, "%d", gHudDisplay.lives);
 }
 
 #ifdef VANILLA_STYLE_CUSTOM_DEBUG
