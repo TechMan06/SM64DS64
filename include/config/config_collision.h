@@ -8,12 +8,12 @@
  * Reduces some find_floor calls, at the cost of some barely noticeable smoothness in Mario's visual movement in a few actions at higher speeds.
  * The defined number is the forward speed threshold before the change is active, since it's only noticeable at lower speeds.
  */
-#define FAST_FLOOR_ALIGN 10
+//#define FAST_FLOOR_ALIGN 10
 
 /**
  * Automatically calculates the optimal collision distance for an object based on its vertices.
  */
-#define AUTO_COLLISION_DISTANCE
+//#define AUTO_COLLISION_DISTANCE
 
 /**
  * Allows all surfaces types to have force, (doesn't require setting force, just allows it to be optional).

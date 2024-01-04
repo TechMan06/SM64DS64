@@ -42,7 +42,7 @@
  * Floombas! These fellas sport custom behaviors (bhvFloomba, bhvFloombaTripletSpawner) and of course the iconic Floomba texture.
  * Also supports macros (macro_floomba, macro_huge_floomba, macro_tiny_floomba, macro_floomba_triplet_spawner, macro_floomba_quintuplet_spawner).
  */
-#define FLOOMBAS
+//#define FLOOMBAS
 
 /**************
  * -- HOOT --
@@ -56,7 +56,7 @@
 /**
  * Causes leaf particles to occasionally fall from trees which contain Hoot.
  */
-#define HOOT_TREE_PARTICLES
+//#define HOOT_TREE_PARTICLES
 
 /**************
  * -- MR I --
@@ -92,7 +92,7 @@
 /**
  * Collecting a 1-Up Mushroom will fully heal Mario.
  */
-#define MUSHROOMS_HEAL
+//#define MUSHROOMS_HEAL
 
 /***************************
  * -- PLATFORM ON TRACK --
@@ -110,7 +110,7 @@
 /**
  * The number of chain balls the Chain Chomp has. Vanilla is 5.
  */
-#define CHAIN_CHOMP_NUM_SEGMENTS 5
+#define CHAIN_CHOMP_NUM_SEGMENTS 8
 
 /***************
  * -- POKEY --
