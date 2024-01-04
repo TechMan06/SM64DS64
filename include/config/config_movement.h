@@ -41,7 +41,7 @@
 /**
  * Disables fall damage.
  */
-#define NO_FALL_DAMAGE
+// #define NO_FALL_DAMAGE
 
 /**
  * Disables the scream that mario makes when falling off a great height (this is separate from actual fall damage).
@@ -134,11 +134,11 @@
 /**
  * Enables Platform Displacement 2, an upgrade to the physics involving moving platforms and how Mario interacts with them.
  */
-#define PLATFORM_DISPLACEMENT_2
+// #define PLATFORM_DISPLACEMENT_2
 
 /**
  * Inertia defines; allow Mario to preserve his momemtum when leaving moving platforms.
  * These require Platform Displacement 2 to be enabled.
  */
-#define MARIO_INERTIA_UPWARD
+// #define MARIO_INERTIA_UPWARD
 // #define MARIO_INERTIA_LATERAL
