@@ -356,17 +356,21 @@ s32 char_to_glyph_index(char c) {
         return GLYPH_BETA_KEY; // beta key, JP only. Reused for Ü in EU.
     }
     /*CUSTOM*/
-    if (c == 'Ã') {
+    if (c == '[') {
         return GLYPH_WARIO_HEAD;
     }
 
-    if (c == 'ã') {
+    if (c == ']') {
         return GLYPH_LUIGI_HEAD;
     }
 
-    if (c == 'ú') {
+    if (c == '<') {
         return GLYPH_YOSHI_HEAD;
     }
+
+    /*if (c == '>') {
+        return GLYPH_WALUIGI_HEAD;
+    }*/
 
 
     return GLYPH_SPACE;
