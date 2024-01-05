@@ -13,7 +13,8 @@ This is a project started by TechMan06 in January 1st 2024, with the goal of bei
 
 This project is being made with the focus of learning, and having fun, that being said, I (TechMan06) cannot guarantee I will be finishing it 100% or making it 100% perfect, and any progress relies on whenever I feel like doing it.
 
-This project is open-source so anyone can compile and enjoy it throughout its development and also so people can study and watch the things I 
+This project is open-source so anyone can compile and enjoy it throughout its development and also so people can study and watch the things I did here, how the code works, and hopefully use that knowledge to make their very own romhacks
+
 
 ## Credits:
 - AquariusAlexx (HUD for Wario and Yoshi, Yoshi 3D model).
