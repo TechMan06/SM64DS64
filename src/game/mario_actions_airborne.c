@@ -497,23 +497,28 @@ s32 act_triple_jump(struct MarioState *m) {
 }
 
 s32 act_backflip(struct MarioState *m) {
+    s16 wallAngle;
+
     if (m->input & INPUT_Z_PRESSED) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
     play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, SOUND_MARIO_YAH_WAH_HOO);
-    common_air_action_step(m, ACT_BACKFLIP_LAND, MARIO_ANIM_BACKFLIP, 0);
+    
+    if (m->wall != NULL && m->vel[1] < 0.0f && m->curCharacter == 0) { //If there is a wall, the current character is Mario and falling, do wall-slide
+        wallAngle = m->wallYaw;
+        m->faceAngle[1] = wallAngle; // Sets Mario's angle to the wall's angle
+        
+        return set_mario_action(m, ACT_AIR_HIT_WALL, 0);
+    } else { //Else do same as original game
+        common_air_action_step(m, ACT_BACKFLIP_LAND, MARIO_ANIM_BACKFLIP, 0);
+    }
 
 #if ENABLE_RUMBLE
     if (m->action == ACT_BACKFLIP_LAND) {
         queue_rumble_data(5, 40);
     }
 #endif
-
-    switch (perform_air_step(m, 0)) {
-        case AIR_STEP_HIT_WALL:
-            set_mario_action(m, ACT_AIR_HIT_WALL, 0);
-    }
 
     play_flip_sounds(m, 2, 3, 17);
     return FALSE;
@@ -1276,20 +1281,28 @@ s32 act_getting_blown(struct MarioState *m) {
 }
 
 s32 act_air_hit_wall(struct MarioState *m) {
+    s16 wallAngle;
+
+    if (m->wall != NULL) {
+        wallAngle = m->wallYaw;// Sets Mario's angle to the wall's angle
+    }
+
     if (m->heldObj != NULL) {
         mario_drop_held_object(m);
     }
 
     set_mario_animation(m, MARIO_ANIM_START_WALLKICK);
 
-    if (m->curCharacter == 0) {
+    if (m->curCharacter == 0) { // if current character is Mario, do wall slides
         switch (perform_air_step(m, 0)) {
             case AIR_STEP_NONE:
+                mario_set_forward_vel(m, 0.0f);
+                m->particleFlags |= PARTICLE_DUST;
+                play_sound(SOUND_MOVING_TERRAIN_SLIDE, m->marioObj->header.gfx.cameraToObject);
                 if (m->input & INPUT_A_PRESSED) {
                     m->vel[0] = 0.0f;
                     m->vel[1] = 52.0f;
                     m->vel[2] = 0.0f;
-                    //m->faceAngle[1] += 0x8000;
                     return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
                 }
             break;
@@ -1300,12 +1313,11 @@ s32 act_air_hit_wall(struct MarioState *m) {
             break;
 
             case AIR_STEP_HIT_WALL:
-                m->faceAngle[1] += 0x8000;
+                mario_set_forward_vel(m, 0.0f);
+                m->faceAngle[1] = wallAngle;
                 m->vel[0] = 0.0f;
                 m->vel[1] = -6.0f;
                 m->vel[2] = 0.0f;
-                play_sound(SOUND_MOVING_TERRAIN_SLIDE + m->terrainSoundAddend, m->marioObj->header.gfx.cameraToObject);
-                m->particleFlags |= PARTICLE_DUST;
             break;
 
             case AIR_STEP_HIT_LAVA_WALL:
@@ -1315,7 +1327,7 @@ s32 act_air_hit_wall(struct MarioState *m) {
 
         return FALSE;
 
-    } else {
+    } else { // else, do same as original code
 
         if (++(m->actionTimer) <= 2) {
             
