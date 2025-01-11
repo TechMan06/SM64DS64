@@ -283,10 +283,10 @@ void bhv_mario_update(void) {
     }
 
     if (gMarioState->controller->buttonPressed & L_TRIG) {
-        if (gMarioState->curCharacter<4){
+        if (gMarioState->curCharacter < 4){
             gMarioState->curCharacter++;
         } else {
-            gMarioState->curCharacter=0;
+            gMarioState->curCharacter = 0;
         }
     }
 
