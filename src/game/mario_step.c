@@ -611,7 +611,7 @@ u32 should_strengthen_gravity_for_jump_ascent(struct MarioState *m) {
 void apply_gravity(struct MarioState *m) {
     if (m->action == ACT_TWIRLING && m->vel[1] < 0.0f) {
         apply_twirl_gravity(m);
-    } else if (m->action == ACT_SHOT_FROM_CANNON) {
+    }   else if (m->action == ACT_SHOT_FROM_CANNON) {
         m->vel[1] -= 1.0f;
         if (m->vel[1] < -75.0f) {
             m->vel[1] = -75.0f;

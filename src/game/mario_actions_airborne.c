@@ -360,6 +360,11 @@ u32 common_air_action_step(struct MarioState *m, u32 landAction, s32 animation, 
     switch (stepResult) {
         case AIR_STEP_NONE:
             set_mario_animation(m, animation);
+
+            if (m->input & INPUT_A_DOWN && m->vel[1] < 0.0f && m->curCharacter == 2) {
+               set_mario_action(m, ACT_FLUTTER, 0);
+            }
+
             break;
 
         case AIR_STEP_LANDED:
@@ -2065,6 +2070,84 @@ s32 check_common_airborne_cancels(struct MarioState *m) {
     return FALSE;
 }
 
+s32 act_flutter(struct MarioState *m) {
+    m->vel[1] = m->vel[1] * 0.85f;
+
+    if (!m->input & INPUT_A_DOWN) {
+        return set_mario_action(m, ACT_FREEFALL, 0);
+    }
+
+    switch (perform_air_step(m, 0)) {
+        case AIR_STEP_LANDED:
+            set_mario_action(m, ACT_FREFFALL_LAND, 0);
+            break;
+
+        case AIR_STEP_HIT_WALL:
+            if (!check_fall_damage_or_get_stuck(m, ACT_HARD_BACKWARD_GROUND_KB)) {
+                set_mario_action(m, landAction, 0);
+            }
+            break;
+
+        case AIR_STEP_HIT_WALL:
+            set_mario_animation(m, animation);
+
+            if (m->forwardVel > 16.0f) {
+#if ENABLE_RUMBLE
+                queue_rumble_data(5, 40);
+#endif
+                mario_bonk_reflection(m, FALSE);
+                m->faceAngle[1] += 0x8000;
+
+                if (m->wall != NULL) {
+                    set_mario_action(m, ACT_AIR_HIT_WALL, 0);
+                } else {
+                    if (m->vel[1] > 0.0f) {
+                        m->vel[1] = 0.0f;
+                    }
+
+                    //! Hands-free holding. Bonking while no wall is referenced
+                    // sets Mario's action to a non-holding action without
+                    // dropping the object, causing the hands-free holding
+                    // glitch. This can be achieved using an exposed ceiling,
+                    // out of bounds, grazing the bottom of a wall while
+                    // falling such that the final quarter step does not find a
+                    // wall collision, or by rising into the top of a wall such
+                    // that the final quarter step detects a ledge, but you are
+                    // not able to ledge grab it.
+                    // change set_mario_action to drop_and_set_mario_action
+                    // in both conditions to fix this
+                    if (m->forwardVel >= 38.0f) {
+                        m->particleFlags |= PARTICLE_VERTICAL_STAR;
+                        set_mario_action(m, ACT_BACKWARD_AIR_KB, 0);
+                    } else {
+                        if (m->forwardVel > 8.0f) {
+                            mario_set_forward_vel(m, -8.0f);
+                        }
+                        return set_mario_action(m, ACT_SOFT_BONK, 0);
+                    }
+                }
+            } else {
+                mario_set_forward_vel(m, 0.0f);
+            }
+            break;
+
+        case AIR_STEP_GRABBED_LEDGE:
+            set_mario_animation(m, MARIO_ANIM_IDLE_ON_LEDGE);
+            drop_and_set_mario_action(m, ACT_LEDGE_GRAB, 0);
+            break;
+
+        case AIR_STEP_GRABBED_CEILING:
+            set_mario_action(m, ACT_START_HANGING, 0);
+            break;
+
+        case AIR_STEP_HIT_LAVA_WALL:
+            lava_boost_on_wall(m);
+            break;
+    }
+
+    return FALSE;
+}
+
 s32 mario_execute_airborne_action(struct MarioState *m) {
     u32 cancel = FALSE;
 
@@ -2123,6 +2206,7 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
         case ACT_RIDING_HOOT:          cancel = act_riding_hoot(m);          break;
         case ACT_TOP_OF_POLE_JUMP:     cancel = act_top_of_pole_jump(m);     break;
         case ACT_VERTICAL_WIND:        cancel = act_vertical_wind(m);        break;
+        case ACT_FLUTTER:              cancel = act_flutter(m);              break;
     }
     /* clang-format on */
 
