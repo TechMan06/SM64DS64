@@ -1005,9 +1005,6 @@ const GeoLayout luigi_geo[] = {
 				GEO_ASM(1, geo_mirror_mario_backface_culling),
 			GEO_CLOSE_NODE(),
 		GEO_CLOSE_NODE(),
-		GEO_DISPLAY_LIST(LAYER_OPAQUE, luigi_material_revert_render_settings),
-		GEO_DISPLAY_LIST(LAYER_ALPHA, luigi_material_revert_render_settings),
-		GEO_DISPLAY_LIST(LAYER_TRANSPARENT, luigi_material_revert_render_settings),
 	GEO_CLOSE_NODE(),
 	GEO_END(),
 };
